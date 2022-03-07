@@ -1,0 +1,34 @@
+repositories:
+- name: minio
+  url: https://charts.min.io/
+
+releases:
+  - name: minio
+    chart: minio/minio
+    version: "3.5.7"
+    namespace: dagster
+    values:
+      - values/minio.yaml
+
+  - name: dagster
+    chart: dagster/dagster
+    version: "0.14.1"
+    namespace: dagster
+    values:
+      - values/dagster.yaml
+
+      - dagster-user-deployments:
+          enabled: true
+          deployments:
+            - name: "pipelines"
+              image:
+                repository: {{env "REGISTRY"}}/pipelines
+                tag: {{ env "REVISION"|default "latest" }}
+                pullPolicy: IfNotPresent
+              dagsterApiGrpcArgs:
+                - "--module-name"
+                - "pipelines.repo"
+              port: 3030
+              envSecrets:
+                - name: dagster-aws-access-key-id
+                - name: dagster-aws-secret-access-key

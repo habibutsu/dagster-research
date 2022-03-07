@@ -1,0 +1,28 @@
+runLauncher:
+
+  type: CeleryK8sRunLauncher
+  config:
+    celeryK8sRunLauncher:
+      envSecrets:
+        - name: dagster-aws-access-key-id
+        - name: dagster-aws-secret-access-key
+
+      workerQueues:
+
+        - name: "dagster"
+          replicaCount: 3
+          labels: {}
+          nodeSelector: {}
+          configSource: {}
+          additionalCeleryArgs: []
+
+rabbitmq:
+  enabled: true
+
+  rabbitmq:
+    username: test
+    password: test
+
+postgres:
+  persistence:
+    size: 2G

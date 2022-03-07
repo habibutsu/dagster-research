@@ -1,0 +1,14 @@
+rootUser: root
+rootPassword: pass1234
+mode: standalone
+persistence:
+  accessMode: ReadWriteOnce
+  size: 500M
+resources:
+  requests:
+    memory: 1Gi
+buckets:
+  - name: dagster
+    versioning: false
+    purge: true
+    policy: none
